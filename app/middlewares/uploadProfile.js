@@ -16,8 +16,11 @@ const upload = multer({
         s3,
         bucket: 'hemanth1508',
         key: function (req, file, cb) {
-            req.file = file.originalname;
-            cb(null, file.originalname);
+            var date = new Date();
+            var timestamp = date.getTime();
+
+            req.file = timestamp + "_" + file.originalname;
+            cb(null, timestamp + "_" + file.originalname);
         }
     })
 });

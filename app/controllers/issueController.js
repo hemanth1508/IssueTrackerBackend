@@ -154,7 +154,7 @@ let createIssue = (req, res) => {
 
     if (req.file) {
 
-        let fileName = req.file.path.split('\\')[1]
+        //let fileName = req.file.path.split('\\')[1]
         let newIssue = new IssueModel({
             issueId: shortid.generate(),
             title: req.body.title,
@@ -162,7 +162,7 @@ let createIssue = (req, res) => {
             reporter: reporterArray,
             description: req.body.description,
             assignee: assigneeArray,
-            screenshot: req.file.filename,
+            screenshot: "https://hemanth1508.s3.ap-south-1.amazonaws.com/" + req.file,
             createdOn: time.now()
         })
 

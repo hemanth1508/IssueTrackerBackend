@@ -5,13 +5,13 @@ const notifyController = require("./../controllers/notifyController");
 const appConfig = require("./../../config/appConfig")
 const auth = require('./../middlewares/auth')
 const multer = require('./../middlewares/multer');
-
+const upload = require('./../middlewares/uploadProfile')
 module.exports.setRouter = (app) => {
 
   let baseUrl = `${appConfig.apiVersion}/issue`;
 
 
-  app.post(`${baseUrl}/create`, multer.upload.single('image'), issueController.createIssue);
+  app.post(`${baseUrl}/create`, upload.array('image', 1), issueController.createIssue);
   /**
   * @api {post} /api/v1/issue/create Create issue
   * @apiVersion 0.0.1
