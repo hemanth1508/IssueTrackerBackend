@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const issueController = require("./../controllers/issueController");
 const notifyController = require("./../controllers/notifyController");
-const appConfig = require("./../../config/appConfig")
-const auth = require('./../middlewares/auth')
-const multer = require('./../middlewares/multer');
-const upload = require('./../middlewares/uploadProfile')
+const appConfig = require("./../../config/appConfig");
+const auth = require('./../middlewares/auth');
+const upload = require('./../middlewares/uploadProfile');
 module.exports.setRouter = (app) => {
 
   let baseUrl = `${appConfig.apiVersion}/issue`;
@@ -312,7 +311,7 @@ module.exports.setRouter = (app) => {
    * }
    */
 
-  app.post(`${baseUrl}/:issueId/edit`, multer.upload.single('image'), issueController.editIssue);
+  app.post(`${baseUrl}/:issueId/edit`, upload.array('image', 1), issueController.editIssue);
 
   /**
   * @api {post} /api/v1/issue/:issueId/edit Edit issue

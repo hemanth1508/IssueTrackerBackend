@@ -9,6 +9,7 @@ const check = require('../libs/checkLib');
 const token = require('../libs/tokenLib');
 const mail = require('../libs/mailLib');
 const fs = require("fs");
+const S3delete = require('../libs/s3Lib');
 
 /* Models */
 const IssueModel = mongoose.model('Issue');
@@ -237,13 +238,10 @@ let editIssue = (req, res) => {
     if (req.file) {
 
         //deleting previous file
-        // let fileName = req.body.previous.split('uploads/')[1]
-
-        fs.unlinkSync('./uploads/' + req.body.previous);
-
+        S3delete.deleteFile(req.body.previous);
 
         let options = req.body;
-        options.screenshot = req.file.filename
+        options.screenshot = "https://hemanth1508.s3.ap-south-1.amazonaws.com/" + req.file
 
         IssueModel.update({ 'issueId': req.params.issueId }, options)
             .select('-__v -_id')
@@ -253,13 +251,10 @@ let editIssue = (req, res) => {
                     if (err.code === 11000) {
                         let apiResponse = response.generate(true, 'Issue should be unique', 400, null)
                         res.send(apiResponse)
-
                     } else {
-
                         logger.error(err.message, 'IssueController: getSingleIssue', 10)
                         let apiResponse = response.generate(true, 'Failed To Find Issue Details', 500, null)
                         res.send(apiResponse)
-
                     }
                 } else if (check.isEmpty(result)) {
                     logger.info('No Issue Found', 'IssueController:getSingleIssue')
